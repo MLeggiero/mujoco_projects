@@ -1,0 +1,90 @@
+/rtabmap:
+  ros__parameters:
+    # Database Settings
+    database_path: '~/.ros/rtabmap.db'
+
+    # Frame IDs
+    frame_id: 'camera_link'
+    odom_frame_id: 'odom'
+    map_frame_id: 'map'
+
+    # Subscribe to topics
+    subscribe_depth: true
+    subscribe_rgb: true
+    subscribe_scan: false  # No 2D laser scan
+    subscribe_scan_cloud: false
+
+    # Approx sync (more forgiving timing)
+    approx_sync: true
+    approx_sync_max_interval: 0.05  # 50ms tolerance
+
+    # Queue size
+    queue_size: 30
+
+    # Processing frequency (Hz)
+    detection_rate: 2.0  # Process 2 frames per second for mapping
+
+    # Memory management
+    Mem/IncrementalMemory: 'true'
+    Mem/InitWMWithAllNodes: 'false'
+
+    # RTAB-Map Strategy
+    RGBD/Enabled: 'true'
+    RGBD/LinearUpdate: '0.1'      # Minimum 10cm movement to add keyframe
+    RGBD/AngularUpdate: '0.1'     # Minimum ~6 degree rotation to add keyframe
+    RGBD/OptimizeFromGraphEnd: 'false'
+
+    # Point cloud settings
+    cloud_decimation: 1  # Keep all points for higher quality
+    cloud_max_depth: 6.0  # Maximum depth in meters (6m range)
+    cloud_min_depth: 0.3  # Minimum depth in meters
+    cloud_voxel_size: 0.005  # 5mm voxel grid for finer detail
+    cloud_noise_filtering_radius: 0.05
+    cloud_noise_filtering_min_neighbors: 5
+
+    # Visual odometry
+    Odom/Strategy: '0'  # 0=Frame-to-Map, 1=Frame-to-Frame
+    Odom/ResetCountdown: '1'
+    OdomF2M/MaxSize: '1000'
+
+    # Feature detection
+    Vis/FeatureType: '6'  # 6=GFTT/ORB (good balance of speed and accuracy)
+    Vis/MaxFeatures: '1000'  # Higher feature count for better tracking
+    Vis/MinInliers: '20'
+
+    # Loop closure detection
+    RGBD/LoopClosureReextractFeatures: 'true'
+    LccBow/MinInliers: '10'
+    LccBow/InlierDistance: '0.1'
+    Rtabmap/TimeThr: '0'  # No time limit for loop closure
+    Mem/RehearsalSimilarity: '0.30'
+
+    # Graph optimization
+    RGBD/OptimizeMaxError: '3.0'
+    Optimizer/Iterations: '20'  # More iterations for better optimization
+    Optimizer/Epsilon: '0.00001'
+    RGBD/ProximityBySpace: 'true'
+    RGBD/ProximityMaxGraphDepth: '100'
+    RGBD/ProximityPathMaxNeighbors: '20'
+
+    # Mapping
+    Grid/FromDepth: 'false'
+    Grid/3D: 'true'  # Create 3D map
+    Grid/MaxObstacleHeight: '2.5'  # Max height for obstacles (2.5m)
+    Grid/MaxGroundHeight: '0.1'   # Ground threshold
+    Grid/CellSize: '0.05'  # 5cm cells
+
+    # Visualization
+    Rtabmap/PublishStats: 'true'
+    Rtabmap/PublishRAMUsage: 'true'
+    Rtabmap/PublishLikelihood: 'true'
+
+    # Performance tuning
+    Rtabmap/DetectionRate: '2.0'  # Hz - process 2 frames/sec
+    Rtabmap/MaxRetrieved: '5'  # Max memories retrieved for loop closure
+    Rtabmap/MemoryThr: '0'  # Memory threshold (0-100, lower = keep more, 0 = keep all)
+
+    # Output publishing
+    publish_tf: 'true'
+    gen_cloud: 'true'  # Generate assembled point cloud
+    gen_octomap: 'false'  # Disable octomap to save resources

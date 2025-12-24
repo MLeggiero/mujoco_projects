@@ -1,0 +1,50 @@
+# ROS 2 Workspace
+ros2_ws/build/
+ros2_ws/install/
+ros2_ws/log/
+
+# ROS Database files
+*.db
+*.db-shm
+*.db-wal
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Bag files (can be large)
+*.bag
+*.db3
+
+# Point cloud files
+*.pcd
+*.ply
+*.bt
+*.ot
+
+# Maps directory
+maps/
+
+# Temporary files
+*.tmp
+*.bak

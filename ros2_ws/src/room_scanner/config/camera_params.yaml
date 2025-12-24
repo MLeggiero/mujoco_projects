@@ -1,0 +1,82 @@
+/camera:
+  ros__parameters:
+    # Camera Device Settings
+    device_type: 'd435'
+    serial_no: ''  # Leave empty to auto-detect, or specify serial number
+
+    # Enable Streams
+    enable_depth: true
+    enable_color: true
+    enable_infra1: false  # Disable infrared to save resources
+    enable_infra2: false
+    enable_fisheye: false
+    enable_gyro: false    # D435 doesn't have IMU
+    enable_accel: false   # D435 doesn't have IMU
+
+    # Point Cloud Settings
+    enable_pointcloud: true
+    pointcloud.enable: true
+    ordered_pc: false  # Unordered is more efficient
+
+    # Color Stream Settings
+    rgb_camera.profile: '1280x720x30'  # width x height x fps
+    rgb_camera.color_format: 'RGB8'
+
+    # Depth Stream Settings
+    depth_module.profile: '1280x720x30'  # Match color resolution
+    depth_module.depth_format: 'Z16'
+
+    # Alignment - Align depth to color for colored point clouds
+    align_depth.enable: true
+    align_depth: true
+
+    # Filters for better depth quality
+    filters: 'spatial,temporal,hole_filling'
+
+    # Spatial Filter - reduces noise
+    spatial_filter.enable: true
+    spatial_filter.smooth_alpha: 0.5
+    spatial_filter.smooth_delta: 20.0
+    spatial_filter.magnitude: 2
+    spatial_filter.hole_fill: 0
+
+    # Temporal Filter - reduces noise over time
+    temporal_filter.enable: true
+    temporal_filter.smooth_alpha: 0.4
+    temporal_filter.smooth_delta: 20.0
+    temporal_filter.persistence_control: 3
+
+    # Hole Filling Filter
+    hole_filling_filter.enable: true
+    hole_filling_filter.mode: 1  # 1 = farest from around
+
+    # Decimation Filter - reduce resolution for performance
+    decimation_filter.enable: false  # Disable, we already reduced resolution
+
+    # HDR - Disable for performance
+    hdr_merge.enable: false
+
+    # Initial Reset
+    initial_reset: true
+
+    # JSON Configuration File (optional)
+    # json_file_path: ''
+
+    # Performance Settings
+    publish_tf: true
+    tf_publish_rate: 30.0
+
+    # Diagnostics
+    diagnostics_period: 1.0
+
+    # QoS Settings
+    qos_overrides:
+      /camera/color/image_raw:
+        depth: 5
+        reliability: best_effort
+      /camera/depth/image_rect_raw:
+        depth: 5
+        reliability: best_effort
+      /camera/depth/color/points:
+        depth: 5
+        reliability: best_effort
