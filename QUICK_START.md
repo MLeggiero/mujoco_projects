@@ -119,13 +119,18 @@ ls -l /dev/video*
 ```
 
 ### Performance issues on Raspberry Pi
+**Note:** Current config is optimized for laptop/desktop (1280x720@30fps). For Raspberry Pi:
+
 1. Edit `ros2_ws/src/room_scanner/config/camera_params.yaml`:
-   - Reduce resolution: `'640x480x15'` → `'424x240x15'`
-   - Lower framerate: `x15` → `x10`
+   - Reduce resolution: `'1280x720x30'` → `'640x480x15'`
+   - Lower tf_publish_rate: `30.0` → `10.0`
 
 2. Edit `ros2_ws/src/room_scanner/config/rtabmap_params.yaml`:
-   - Increase detection_rate: `1.0` → `2.0` (process every 2 seconds)
-   - Increase cloud_decimation: `2` → `4`
+   - Reduce queue_size: `30` → `10`
+   - Reduce detection_rate: `2.0` → `1.0` (process every second)
+   - Increase cloud_decimation: `1` → `2`
+   - Increase cloud_voxel_size: `0.005` → `0.01`
+   - Reduce Vis/MaxFeatures: `'1000'` → `'400'`
 
 3. Rebuild workspace:
    ```bash

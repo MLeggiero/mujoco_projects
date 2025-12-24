@@ -1,15 +1,17 @@
 # 3D Room Scanner with Intel RealSense D435
 
-A ROS 2 Humble-based 3D room scanning system for Raspberry Pi with Intel RealSense D435 depth camera, touchscreen visualization, and optional IMU integration.
+A ROS 2 Humble-based 3D room scanning system with Intel RealSense D435 depth camera, touchscreen visualization, and optional IMU integration.
 
 ## System Overview
 
 ### Hardware Requirements
-- Raspberry Pi 4 (4GB+ RAM recommended)
+- **Laptop/Desktop** or Raspberry Pi 4 (4GB+ RAM minimum, 8GB recommended)
 - Intel RealSense D435 depth camera
-- Touchscreen display
+- Display (touchscreen optional for portable setups)
 - External IMU (optional, for future integration)
 - Ubuntu 22.04 (64-bit recommended for ROS 2 Humble)
+
+**Note:** Current configuration is optimized for laptop/desktop performance (1280x720@30fps). For Raspberry Pi, see Performance Tuning section below.
 
 ### Software Stack
 - **ROS 2 Humble Hawksbill**
@@ -154,18 +156,40 @@ mujoco_projects/
 - `/rtabmap/cloud_map` - Aggregated point cloud
 - `/octomap_full` - Full 3D occupancy map (if using octomap)
 
-## Performance Tuning for Raspberry Pi
+## Performance Tuning
 
-The configuration files are optimized for Raspberry Pi 4:
-- Reduced image resolution (640x480 default)
-- Lower frame rate (15 FPS)
-- Point cloud downsampling
-- Memory-efficient mapping parameters
+### Current Configuration (Laptop/Desktop)
+The configuration files are set for high-quality scanning:
+- High image resolution (1280x720)
+- 30 FPS capture rate
+- Minimal point cloud decimation (cloud_decimation: 1)
+- Fine voxel grid (5mm)
+- More features for better tracking (1000 features)
 
-For better performance:
-1. Overclock your Raspberry Pi (if using active cooling)
-2. Use 64-bit Ubuntu for better performance
-3. Reduce resolution further if needed in `config/camera_params.yaml`
+### For Raspberry Pi 4
+If deploying on Raspberry Pi, reduce these settings in the config files:
+
+**In `config/camera_params.yaml`:**
+```yaml
+rgb_camera.profile: '640x480x15'      # Reduce from 1280x720x30
+depth_module.profile: '640x480x15'    # Reduce from 1280x720x30
+tf_publish_rate: 10.0                 # Reduce from 30.0
+```
+
+**In `config/rtabmap_params.yaml`:**
+```yaml
+queue_size: 10                        # Reduce from 30
+detection_rate: 1.0                   # Reduce from 2.0
+cloud_decimation: 2                   # Increase from 1
+cloud_voxel_size: 0.01                # Increase from 0.005
+Vis/MaxFeatures: '400'                # Reduce from '1000'
+Optimizer/Iterations: '10'            # Reduce from '20'
+```
+
+After editing, rebuild the workspace:
+```bash
+cd ros2_ws && colcon build --symlink-install
+```
 
 ## Future Enhancements
 

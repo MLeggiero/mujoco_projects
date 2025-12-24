@@ -18,12 +18,12 @@
     pointcloud.enable: true
     ordered_pc: false  # Unordered is more efficient
 
-    # Color Stream Settings (Optimized for Raspberry Pi)
-    rgb_camera.profile: '640x480x15'  # width x height x fps
+    # Color Stream Settings
+    rgb_camera.profile: '1280x720x30'  # width x height x fps
     rgb_camera.color_format: 'RGB8'
 
-    # Depth Stream Settings (Optimized for Raspberry Pi)
-    depth_module.profile: '640x480x15'  # Match color resolution
+    # Depth Stream Settings
+    depth_module.profile: '1280x720x30'  # Match color resolution
     depth_module.depth_format: 'Z16'
 
     # Alignment - Align depth to color for colored point clouds
@@ -64,7 +64,7 @@
 
     # Performance Settings
     publish_tf: true
-    tf_publish_rate: 10.0  # Reduced for Raspberry Pi
+    tf_publish_rate: 30.0
 
     # Diagnostics
     diagnostics_period: 1.0
