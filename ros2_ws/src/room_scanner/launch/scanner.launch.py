@@ -17,6 +17,18 @@ def generate_launch_description():
     use_rviz = LaunchConfiguration('use_rviz')
     use_rtabmap = LaunchConfiguration('use_rtabmap')
     use_octomap = LaunchConfiguration('use_octomap')
+    use_gui = LaunchConfiguration('use_gui')
+    use_gamepad = LaunchConfiguration('use_gamepad')
+
+    declare_use_gui_cmd = DeclareLaunchArgument(
+        'use_gui',
+        default_value='true',
+        description='Whether to start the Desktop Control GUI')
+
+    declare_use_gamepad_cmd = DeclareLaunchArgument(
+        'use_gamepad',
+        default_value='false',
+        description='Whether to enable Gamepad Control (requires joy package)')
 
     declare_use_rviz_cmd = DeclareLaunchArgument(
         'use_rviz',
@@ -124,6 +136,33 @@ def generate_launch_description():
         condition=IfCondition(use_rviz)
     )
 
+    # Desktop Control GUI
+    gui_node = Node(
+        package='room_scanner',
+        executable='scanner_gui',
+        name='scanner_gui',
+        output='screen',
+        condition=IfCondition(use_gui)
+    )
+
+    # Gamepad Control
+    # Requires 'joy' package: sudo apt install ros-humble-joy
+    joy_node = Node(
+        package='joy',
+        executable='joy_node',
+        name='joy_node',
+        output='screen',
+        condition=IfCondition(use_gamepad)
+    )
+
+    gamepad_control_node = Node(
+        package='room_scanner',
+        executable='gamepad_control',
+        name='gamepad_control',
+        output='screen',
+        condition=IfCondition(use_gamepad)
+    )
+
     # Create the launch description
     ld = LaunchDescription()
 
@@ -131,6 +170,8 @@ def generate_launch_description():
     ld.add_action(declare_use_rviz_cmd)
     ld.add_action(declare_use_rtabmap_cmd)
     ld.add_action(declare_use_octomap_cmd)
+    ld.add_action(declare_use_gui_cmd)
+    ld.add_action(declare_use_gamepad_cmd)
 
     # Add nodes
     ld.add_action(realsense_node)
@@ -138,5 +179,8 @@ def generate_launch_description():
     ld.add_action(rtabmap_node)
     ld.add_action(octomap_node)
     ld.add_action(rviz_node)
+    ld.add_action(gui_node)
+    ld.add_action(joy_node)
+    ld.add_action(gamepad_control_node)
 
     return ld

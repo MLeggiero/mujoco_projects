@@ -76,7 +76,8 @@ sudo apt install -y \
     ros-humble-compressed-image-transport \
     ros-humble-rviz2 \
     ros-humble-rqt \
-    ros-humble-rqt-common-plugins
+    ros-humble-rqt-common-plugins \
+    ros-humble-joy
 
 # Install Python dependencies
 echo ""

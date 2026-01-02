@@ -39,6 +39,13 @@ install(DIRECTORY
   DESTINATION share/${PROJECT_NAME}/
 )
 
+# Install Python scripts
+install(PROGRAMS
+  scripts/scanner_gui
+  scripts/gamepad_control
+  DESTINATION lib/${PROJECT_NAME}
+)
+
 # Install resource marker file
 install(FILES
   resource/${PROJECT_NAME}
